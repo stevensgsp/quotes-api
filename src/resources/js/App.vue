@@ -6,7 +6,7 @@
             <p>{{ quote.quote }} - {{ quote.author }}</p>
         </div>
 
-        <div v-if="totalPages > 1">
+        <div v-if="totalPages > 1" class="pagination">
             <button @click="fetchQuotes(currentPage - 1)" :disabled="currentPage === 1">
                 Prev
             </button>
@@ -14,7 +14,8 @@
             <template v-for="page in visiblePages" :key="page">
                 <button 
                     v-if="page === '...'" 
-                    disabled>
+                    disabled 
+                    class="dots">
                     ...
                 </button>
                 <button 
@@ -113,15 +114,47 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
 button {
     margin: 0 5px;
     padding: 5px 10px;
+    border: 1px solid #007bff;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+    border: 1px solid #ccc;
 }
 
 button.active {
     background-color: #007bff;
     color: white;
     font-weight: bold;
+    border: 1px solid #0056b3;
+}
+
+button.dots {
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #555;
+    cursor: default;
 }
 </style>
