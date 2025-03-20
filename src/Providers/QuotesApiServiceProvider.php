@@ -11,29 +11,34 @@ class QuotesApiServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Publish config
-        $this->publishes([
-            __DIR__ . '/../config/quotes.php' => config_path('quotes.php'),
-        ], 'config');
-
-        // Publish UI
-        $this->publishes([
-            __DIR__.'/../resources/js' => public_path('vendor/quotes-package'),
-        ], 'quotes-ui');
-
         // Load routes
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
 
         // Load views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'quotesapi');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'quotes-api');
+
+        // Publish UI Views
+        $this->publishes([
+            __DIR__ . '/../resources/js' => resource_path('views/vendor/quotes-api'),
+        ], 'quotes-api-views');
+
+        //Publish UI assets
+        $this->publishes([
+            __DIR__ . '/../public/vendor/quotes-api' => public_path('vendor/quotes-api'),
+        ], 'quotes-api-ui');
+
+        // Publish config
+        $this->publishes([
+            __DIR__ . '/../config/quotes.php' => config_path('quotes.php'),
+        ], 'quotes-api-config');
     }
 
     /**
-     * Registrar servicios (se ejecuta antes que boot).
+     * Register services.
      */
     public function register()
     {
-        // Fusionar configuración del paquete con la del usuario
-        $this->mergeConfigFrom(__DIR__ . '/../config/quotes.php', 'quotesapi');
+        // Merge package settings with user settings
+        $this->mergeConfigFrom(__DIR__ . '/../config/quotes.php', 'quotes-api');
     }
 }

@@ -5,11 +5,14 @@ import path from 'path';
 export default defineConfig({
     plugins: [vue()],
     build: {
-        outDir: 'src/resources/js/dist',
+        outDir: 'public/vendor/quotes-api',
         emptyOutDir: true,
         rollupOptions: {
-            input: {
-                app: path.resolve(__dirname, 'src/resources/js/main.js'),
+            input: path.resolve(__dirname, 'src/resources/js/main.js'),
+            output: {
+                entryFileNames: 'assets/index.js',
+                chunkFileNames: 'assets/[name]-[hash].js',
+                assetFileNames: 'assets/[name]-[hash][extname]',
             },
         },
     },
