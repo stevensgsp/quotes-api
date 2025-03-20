@@ -18,7 +18,7 @@ class QuoteService
     public function __construct()
     {
         $this->apiBaseUrl = config('quotes.base_url', 'https://dummyjson.com');
-        $this->rateLimit = config('quotes.rate_limit', 10);
+        $this->rateLimit = config('quotes.rate_limit', 60);
         $this->windowTime = config('quotes.window_time', 60);
     }
 
