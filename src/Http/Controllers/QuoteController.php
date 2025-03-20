@@ -32,4 +32,9 @@ class QuoteController
     {
         return response()->json($this->quoteService->getNextPageQuotes());
     }
+
+    public function totalPages()
+    {
+        return response()->json(['total_pages' => $this->quoteService->getTotalPages()]);
+    }
 }

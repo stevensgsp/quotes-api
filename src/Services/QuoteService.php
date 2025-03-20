@@ -15,6 +15,7 @@ class QuoteService
     private array $localCache = [];
     private int $currentPage = 1;
     private int $itemsPerPage = 10;
+    private int $totalPages = 0;
 
     public function __construct()
     {
@@ -47,13 +48,19 @@ class QuoteService
         // Get API quotes with limit and skip
         $url = "{$this->apiBaseUrl}/quotes?limit={$this->itemsPerPage}&skip={$skip}";
 
-        // Retrieve appointments and store them in the cache
-        $this->localCache = Cache::remember('quotes_all', $this->windowTime, function () use ($url) {
-            return $this->makeRequest($url);
-        });
+        // Retrieve quotes and store them in the cache
+        $response = $this->makeRequest($url);
+
+        // Save the total number of pages
+        $this->totalPages = (int) ceil($response['total'] / $this->itemsPerPage);
 
         // Ensure quotes are sorted by ID for binary search
-        usort($this->localCache, fn($a, $b) => $a['id'] <=> $b['id']);
+        usort($response['quotes'], fn($a, $b) => $a['id'] <=> $b['id']);
+
+        // Caching quotes
+        $this->localCache = Cache::remember('quotes_all', $this->windowTime, function () use ($response) {
+            return $response['quotes'];
+        });
 
         return $this->localCache;
     }
@@ -143,5 +150,10 @@ class QuoteService
 
         // We sort the local cache by ID to ensure that binary search works.
         usort($this->localCache, fn($a, $b) => $a['id'] <=> $b['id']);
+    }
+
+    public function getTotalPages(): int
+    {
+        return $this->totalPages;
     }
 }
