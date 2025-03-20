@@ -18,7 +18,7 @@ class QuoteController
     {
         $page = $request->query('page', 1);
 
-        $limit = 10;
+        $limit = $request->query('perPage', 10);
         $skip = ($page - 1) * $limit;
 
         return response()->json($this->quoteService->getAllQuotes($limit, $skip));

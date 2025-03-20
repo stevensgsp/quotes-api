@@ -41,7 +41,7 @@ export default {
             quoteById: null,
             currentPage: 1,
             totalPages: 0,
-            limit: 10,
+            perPage: 10,
         };
     },
     methods: {
@@ -50,10 +50,9 @@ export default {
             this.quote = response.data;
         },
         async fetchQuotes(page = 1) {
-            let response = await axios.get(`/api/quotes?page=${page}`);
+            let response = await axios.get(`/api/quotes?page=${page}&perPage=${perPage}`);
             this.quotes = response.data.quotes;
-            this.limit = response.data.limit;
-            this.totalPages = Math.ceil(response.data.total / this.limit);
+            this.totalPages = Math.ceil(response.data.total / this.perPage);
             this.currentPage = page;
         },
         async fetchQuoteById() {
