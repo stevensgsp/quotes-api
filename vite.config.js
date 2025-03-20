@@ -12,7 +12,13 @@ export default defineConfig({
             output: {
                 entryFileNames: 'assets/index.js',
                 chunkFileNames: 'assets/[name]-[hash].js',
-                assetFileNames: 'assets/[name]-[hash][extname]',
+                assetFileNames: (assetInfo) => {
+                    const fileName = assetInfo.names?.[0] || '';
+                    if (fileName.endsWith('.css')) {
+                        return 'assets/styles.css';
+                    }
+                    return 'assets/[name]-[hash][extname]';
+                },
             },
         },
     },
