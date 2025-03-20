@@ -52,8 +52,8 @@ export default {
         async fetchQuotes(page = 1) {
             let response = await axios.get(`/api/quotes?page=${page}`);
             this.quotes = response.data.quotes;
-            this.totalPages = Math.ceil(response.data.total / limit);
             this.limit = response.data.limit;
+            this.totalPages = Math.ceil(response.data.total / this.limit);
             this.currentPage = page;
         },
         async fetchQuoteById() {
