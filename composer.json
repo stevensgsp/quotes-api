@@ -18,7 +18,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Stevensgsp\\QuotesApi\\QuotesApiServiceProvider"
+                "Stevensgsp\\QuotesApi\\Providers\\QuotesApiServiceProvider"
             ]
         }
     },
