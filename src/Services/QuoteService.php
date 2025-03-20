@@ -59,7 +59,7 @@ class QuoteService
 
         // Caching quotes
         $this->localCache = Cache::remember('quotes_all', $this->windowTime, function () use ($response) {
-            return $response['quotes'];
+            return $response;
         });
 
         return $this->localCache;

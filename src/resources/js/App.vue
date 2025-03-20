@@ -41,7 +41,7 @@ export default {
             this.quote = response.data;
         },
         async fetchNextPageQuotes() {
-            let response = await axios.get('/api/quotes/next');
+            let response = await axios.get('/api/quotes');
             this.quotes = [...this.quotes, ...response.data];
             this.currentPage++;
         },
