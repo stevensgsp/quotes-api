@@ -30,7 +30,7 @@ class QuotesApiServiceProvider extends ServiceProvider
 
         //Publish UI assets
         $this->publishes([
-            __DIR__ . '/../../public/vendor/quotes-api' => public_path('vendor/quotes-api'),
+            __DIR__ . '/../../dist' => public_path('vendor/quotes-api'),
         ], 'quotes-api-ui');
 
         // Publish config
