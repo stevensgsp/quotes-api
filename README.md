@@ -44,7 +44,7 @@ Once the package is installed, you can publish the configuration file to customi
 Run the following command:
 
 ```bash
-php artisan vendor:publish --provider="Stevensgsp\QuotesApi\Providers\QuotesApiServiceProvider" --tag="config"
+php artisan vendor:publish --tag=quotes-api-config
 ```
 
 This will create a `config/quotes.php` file where you can configure settings such as the default quote source, etc.
@@ -59,13 +59,14 @@ The package provides the following API endpoints:
 
 ## Publishing and Modifying the UI
 
-If the package includes a UI component (e.g., a blade view), you can publish it using the following command:
+Publish the UI using the following commands:
 
 ```bash
-php artisan vendor:publish --provider="Vendor\Package\PackageServiceProvider" --tag="views"
+php artisan vendor:publish --tag=quotes-api-views
+php artisan vendor:publish --tag=quotes-api-ui
 ```
 
-Once published, you can modify the views as needed in the `resources/views/vendor/package-name` directory.
+Once published, you can modify the views as needed in the `resources/views/vendor/quotes-api` directory and the assets in `public/vendor/quotes-api/assets`.
 
 ## Running Tests
 

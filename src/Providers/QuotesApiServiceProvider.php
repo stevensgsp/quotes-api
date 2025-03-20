@@ -19,7 +19,7 @@ class QuotesApiServiceProvider extends ServiceProvider
 
         // Publish UI Views
         $this->publishes([
-            __DIR__ . '/../resources/js' => resource_path('views/vendor/quotes-api'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/quotes-api'),
         ], 'quotes-api-views');
 
         //Publish UI assets
