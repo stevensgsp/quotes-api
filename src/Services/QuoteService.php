@@ -12,6 +12,7 @@ class QuoteService
     private int $rateLimit;
     private int $windowTime;
     private string $cacheKey = 'quotes_api_request_count';
+    private array $localCache = [];
 
     public function __construct()
     {
@@ -22,9 +23,18 @@ class QuoteService
 
     public function getAllQuotes()
     {
-        return Cache::remember('quotes_all', $this->windowTime, function () {
+        // First, try to recover from the local cache
+        if (empty($this->localCache)) {
+            return $this->localCache;
+        }
+
+        // If we don't have the quotes cached, we retrieve all of them and store them locally.
+        $this->localCache = Cache::remember('quotes_all', $this->windowTime, function () {
             return $this->makeRequest("{$this->apiBaseUrl}/quotes");
         });
+
+        // Ensure quotes are sorted by ID for binary search
+        usort($this->localCache, fn($a, $b) => $a['id'] <=> $b['id']);
     }
 
     public function getRandomQuote()
@@ -34,9 +44,16 @@ class QuoteService
 
     public function getQuote(int $id)
     {
+        // We check if the quote is in the local cache
         $quotes = $this->getAllQuotes();
         $index = $this->binarySearch($quotes, $id);
-        return $index !== -1 ? $quotes[$index] : $this->makeRequest("{$this->apiBaseUrl}/quotes/{$id}");
+
+        if ($index !== -1) {
+            return $quotes[$index];
+        }
+
+        // If it is not in the cache, we request it from the API
+        return $this->makeRequest("{$this->apiBaseUrl}/quotes/{$id}");
     }
 
     private function makeRequest(string $url)
