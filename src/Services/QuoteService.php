@@ -53,13 +53,17 @@ class QuoteService
         }
 
         // If it is not in the cache, we request it from the API
-        return $this->makeRequest("{$this->apiBaseUrl}/quotes/{$id}");
+        $quote = $this->makeRequest("{$this->apiBaseUrl}/quotes/{$id}");
+
+        // We add the new quote to the local cache and sort the cache
+        $this->addQuoteToCache($quote);
+
+        return $quote;
     }
 
     private function makeRequest(string $url)
     {
         $this->enforceRateLimit();
-
         return Http::get($url)->json();
     }
 
@@ -68,30 +72,22 @@ class QuoteService
         while (true) {
             $data = Cache::get($this->cacheKey);
 
-            // If the cache does not exist, initialize it
             if (empty($data)) {
                 $data = ['count' => 0, 'reset_at' => now()->timestamp + $this->windowTime];
-
                 Cache::put($this->cacheKey, $data, $this->windowTime);
             }
 
-            // If the window has already been reset, reset the counter
             if ($data['reset_at'] <= now()->timestamp) {
                 Cache::put($this->cacheKey, ['count' => 1, 'reset_at' => now()->timestamp + $this->windowTime], $this->windowTime);
-
                 return;
             }
 
-            // If the limit has not been reached, increment the counter and continue
             if ($data['count'] < $this->rateLimit) {
                 $data['count']++;
-
                 Cache::put($this->cacheKey, $data, $this->windowTime);
-
                 return;
             }
 
-            // If the limit is reached, wait a short period before trying again.
             Log::warning("Rate limit reached. Waiting before retrying...");
             sleep(2);
         }
@@ -113,5 +109,18 @@ class QuoteService
         }
 
         return -1;
+    }
+
+    private function addQuoteToCache(array $quote)
+    {
+        // If the quote is already in the local cache, we don't add it.
+        if (in_array($quote, $this->localCache)) {
+            return;
+        }
+
+        $this->localCache[] = $quote;
+
+        // We sort the local cache by ID to ensure that binary search works.
+        usort($this->localCache, fn($a, $b) => $a['id'] <=> $b['id']);
     }
 }
