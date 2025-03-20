@@ -13,7 +13,7 @@ class QuotesApiServiceProvider extends ServiceProvider
     {
         // Load routes
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
-        $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
         // Load views
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'quotes-api');
