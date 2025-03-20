@@ -67,7 +67,9 @@ class QuoteService
 
             // If the limit has not been reached, increment the counter and continue
             if ($data['count'] < $this->rateLimit) {
-                Cache::increment("{$this->cacheKey}.count");
+                $data['count']++;
+
+                Cache::put($this->cacheKey, $data, $this->windowTime);
 
                 return;
             }
