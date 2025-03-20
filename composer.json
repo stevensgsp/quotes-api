@@ -1,0 +1,25 @@
+{
+    "name": "stevensgsp/quotes-api",
+    "description": "A comprehensive Laravel package that consumes quote data from the https://dummyjson.com/quotes API, implements request rate limiting, utilizes local caching with efficient retrieval using binary search, and provides a pre-built, publishable UI built with Vue.js for interacting with the API.",
+    "autoload": {
+        "psr-4": {
+            "Stevensgsp\\QuotesApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Steven Sucre",
+            "email": "steven.g.s.p@gmail.com"
+        }
+    ],
+    "require": {
+        "laravel/framework": "^8.83"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Stevensgsp\\QuotesApi\\QuotesApiServiceProvider"
+            ]
+        }
+    }
+}
