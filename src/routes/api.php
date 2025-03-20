@@ -1,4 +1,4 @@
-<?
+<?php
 
 use Illuminate\Support\Facades\Route;
 use Stevensgsp\QuotesApi\Http\Controllers\QuoteController;
