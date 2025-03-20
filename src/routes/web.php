@@ -3,5 +3,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('quotes', function () {
-    return view('quotes::index');
+    return view('quotes::quotes-ui');
 });
