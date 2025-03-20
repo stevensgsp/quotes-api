@@ -26,4 +26,5 @@ return [
 
     'rate_limit' => env('QUOTES_API_RATE_LIMIT', 60),
     'window_time' => env('QUOTES_API_WINDOW_TIME', 60),
+    'cache_time' => env('QUOTES_API_CACHE_TIME', 3600),
 ];

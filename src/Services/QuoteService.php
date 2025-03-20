@@ -19,6 +19,7 @@ class QuoteService
     private string $apiBaseUrl;
     private int $rateLimit;
     private int $windowTime;
+    private int $cacheTime;
     private string $cacheKey = 'quotes_api_request_count';
     private array $localCache = [];
 
@@ -27,6 +28,7 @@ class QuoteService
         $this->apiBaseUrl = config('quotes.base_url', 'https://dummyjson.com');
         $this->rateLimit = config('quotes.rate_limit', 60);
         $this->windowTime = config('quotes.window_time', 60);
+        $this->cacheTime = config('quotes.cache_time', 3600);
     }
 
     /**
@@ -126,6 +128,7 @@ class QuoteService
     private function makeRequest(string $url)
     {
         $this->enforceRateLimit();
+
         return Http::get($url)->json();
     }
 
