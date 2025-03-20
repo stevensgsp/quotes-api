@@ -49,17 +49,26 @@ class QuoteService
     private function enforceRateLimit()
     {
         while (true) {
-            $data = Cache::get($this->cacheKey, ['count' => 0, 'reset_at' => now()->timestamp + $this->windowTime]);
+            $data = Cache::get($this->cacheKey);
+
+            // If the cache does not exist, initialize it
+            if (empty($data)) {
+                $data = ['count' => 0, 'reset_at' => now()->timestamp + $this->windowTime];
+
+                Cache::put($this->cacheKey, $data, $this->windowTime);
+            }
 
             // If the window has already been reset, reset the counter
             if ($data['reset_at'] <= now()->timestamp) {
                 Cache::put($this->cacheKey, ['count' => 1, 'reset_at' => now()->timestamp + $this->windowTime], $this->windowTime);
+
                 return;
             }
 
             // If the limit has not been reached, increment the counter and continue
             if ($data['count'] < $this->rateLimit) {
                 Cache::increment("{$this->cacheKey}.count");
+
                 return;
             }
 
