@@ -4,7 +4,7 @@ namespace Stevensgsp\QuotesApi\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class QuotesServiceProvider extends ServiceProvider
+class QuotesApiServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.

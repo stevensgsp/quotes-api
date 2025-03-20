@@ -26,7 +26,7 @@ Since this package is not available in Packagist, you can install it directly fr
 
 ```json
 "require": {
-    "stevensgsp/quotes-api": "dev-main"
+    "stevensgsp/quotes-api": "dev-master"
 }
 ```
 
