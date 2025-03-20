@@ -4,9 +4,17 @@
         <div v-for="quote in quotes" :key="quote.id">
             <p>{{ quote.quote }} - {{ quote.author }}</p>
         </div>
-        <button @click="fetchNextPageQuotes" :disabled="currentPage >= totalPages">
-            Load More Quotes
-        </button>
+
+        <div v-if="totalPages > 1">
+            <button
+                v-for="page in totalPages"
+                :key="page"
+                @click="fetchQuotes((page - 1) * limit, limit)"
+                :class="{ active: page === currentPage }"
+            >
+                {{ page }}
+            </button>
+        </div>
 
         <h2>Random Quote</h2>
         <button @click="fetchRandomQuote">Get Random Quote</button>
@@ -33,6 +41,7 @@ export default {
             quoteById: null,
             currentPage: 1,
             totalPages: 0,
+            limit: 10,
         };
     },
     methods: {
@@ -40,11 +49,11 @@ export default {
             let response = await axios.get('/api/quotes/random');
             this.quote = response.data;
         },
-        async fetchNextPageQuotes() {
-            let response = await axios.get('/api/quotes');
-            this.quotes = [...this.quotes, ...response.data.quotes];
-            this.totalPages = response.data.total;
-            this.currentPage++;
+        async fetchQuotes(skip = 0, limit = this.limit) {
+            let response = await axios.get(`/api/quotes?skip=${skip}&limit=${limit}`);
+            this.quotes = response.data.quotes;
+            this.totalPages = Math.ceil(response.data.total / limit);
+            this.currentPage = Math.floor(skip / limit) + 1;
         },
         async fetchQuoteById() {
             if (!this.quoteId) return;
@@ -53,7 +62,23 @@ export default {
         },
     },
     mounted() {
-        this.fetchNextPageQuotes();
+        this.fetchQuotes();
     },
 };
 </script>
+
+<style scoped>
+button {
+    margin: 5px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+button.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+</style>
