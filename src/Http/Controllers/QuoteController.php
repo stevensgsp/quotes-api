@@ -27,4 +27,9 @@ class QuoteController
     {
         return response()->json($this->quoteService->getQuote($id));
     }
+
+    public function nextPage()
+    {
+        return response()->json($this->quoteService->getNextPageQuotes());
+    }
 }

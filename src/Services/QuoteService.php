@@ -13,6 +13,8 @@ class QuoteService
     private int $windowTime;
     private string $cacheKey = 'quotes_api_request_count';
     private array $localCache = [];
+    private int $currentPage = 1;
+    private int $itemsPerPage = 10;
 
     public function __construct()
     {
@@ -25,16 +27,35 @@ class QuoteService
     {
         // First, try to recover from the local cache
         if (empty($this->localCache)) {
-            return $this->localCache;
+            return $this->fetchAndCacheQuotes();
         }
 
-        // If we don't have the quotes cached, we retrieve all of them and store them locally.
-        $this->localCache = Cache::remember('quotes_all', $this->windowTime, function () {
-            return $this->makeRequest("{$this->apiBaseUrl}/quotes");
+        return $this->localCache;
+    }
+
+    public function getNextPageQuotes()
+    {
+        $this->currentPage++;
+        return $this->fetchAndCacheQuotes();
+    }
+
+    private function fetchAndCacheQuotes()
+    {
+        // Calculate the skip parameter for pagination
+        $skip = ($this->currentPage - 1) * $this->itemsPerPage;
+
+        // Get API quotes with limit and skip
+        $url = "{$this->apiBaseUrl}/quotes?limit={$this->itemsPerPage}&skip={$skip}";
+
+        // Retrieve appointments and store them in the cache
+        $this->localCache = Cache::remember('quotes_all', $this->windowTime, function () use ($url) {
+            return $this->makeRequest($url);
         });
 
         // Ensure quotes are sorted by ID for binary search
         usort($this->localCache, fn($a, $b) => $a['id'] <=> $b['id']);
+
+        return $this->localCache;
     }
 
     public function getRandomQuote()
