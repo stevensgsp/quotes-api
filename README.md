@@ -44,7 +44,7 @@ Once the package is installed, you can publish the configuration file to customi
 Run the following command:
 
 ```bash
-php artisan vendor:publish --provider="Vendor\Package\PackageServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Stevensgsp\QuotesApi\Providers\QuotesApiServiceProvider" --tag="config"
 ```
 
 This will create a `config/quotes.php` file where you can configure settings such as the default quote source, etc.

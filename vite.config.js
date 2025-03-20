@@ -5,7 +5,7 @@ import path from 'path';
 export default defineConfig({
     plugins: [vue()],
     build: {
-        outDir: 'dist',
+        outDir: 'src/resources/js/dist',
         emptyOutDir: true,
         rollupOptions: {
             input: {
