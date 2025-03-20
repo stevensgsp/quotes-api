@@ -9,7 +9,7 @@
             <button
                 v-for="page in totalPages"
                 :key="page"
-                @click="fetchQuotes((page - 1) * limit, limit)"
+                @click="fetchQuotes(page)"
                 :class="{ active: page === currentPage }"
             >
                 {{ page }}
@@ -49,11 +49,12 @@ export default {
             let response = await axios.get('/api/quotes/random');
             this.quote = response.data;
         },
-        async fetchQuotes(skip = 0, limit = this.limit) {
-            let response = await axios.get(`/api/quotes?skip=${skip}&limit=${limit}`);
+        async fetchQuotes(page = 1) {
+            let response = await axios.get(`/api/quotes?page=${page}`);
             this.quotes = response.data.quotes;
             this.totalPages = Math.ceil(response.data.total / limit);
-            this.currentPage = Math.floor(skip / limit) + 1;
+            this.limit = response.data.limit;
+            this.currentPage = page;
         },
         async fetchQuoteById() {
             if (!this.quoteId) return;

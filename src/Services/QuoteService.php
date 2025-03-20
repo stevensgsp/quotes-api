@@ -13,8 +13,6 @@ class QuoteService
     private int $windowTime;
     private string $cacheKey = 'quotes_api_request_count';
     private array $localCache = [];
-    private int $currentPage = 1;
-    private int $itemsPerPage = 10;
     private int $totalPages = 0;
 
     public function __construct()
@@ -24,41 +22,32 @@ class QuoteService
         $this->windowTime = config('quotes.window_time', 60);
     }
 
-    public function getAllQuotes()
+    public function getAllQuotes(int $limit = 0, int $skip = 0)
     {
         // First, try to recover from the local cache
         if (empty($this->localCache)) {
-            return $this->fetchAndCacheQuotes();
+            return $this->fetchAndCacheQuotes($limit, $skip);
         }
 
         return $this->localCache;
     }
 
-    public function getNextPageQuotes()
+    private function fetchAndCacheQuotes(int $limit, int $skip)
     {
-        $this->currentPage++;
-        return $this->fetchAndCacheQuotes();
-    }
-
-    private function fetchAndCacheQuotes()
-    {
-        // Calculate the skip parameter for pagination
-        $skip = ($this->currentPage - 1) * $this->itemsPerPage;
-
         // Get API quotes with limit and skip
-        $url = "{$this->apiBaseUrl}/quotes?limit={$this->itemsPerPage}&skip={$skip}";
+        $url = "{$this->apiBaseUrl}/quotes?limit={$limit}&skip={$skip}";
 
         // Retrieve quotes and store them in the cache
         $response = $this->makeRequest($url);
 
         // Save the total number of pages
-        $this->totalPages = (int) ceil($response['total'] / $this->itemsPerPage);
+        $this->totalPages = (int) ceil($response['total'] / $limit);
 
         // Ensure quotes are sorted by ID for binary search
         usort($response['quotes'], fn($a, $b) => $a['id'] <=> $b['id']);
 
         // Caching quotes
-        $this->localCache = Cache::remember('quotes_all', $this->windowTime, function () use ($response) {
+        $this->localCache = Cache::remember("quotes_{$limit}_{$skip}", $this->windowTime, function () use ($response) {
             return $response;
         });
 

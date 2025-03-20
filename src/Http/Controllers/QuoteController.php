@@ -2,6 +2,7 @@
 
 namespace Stevensgsp\QuotesApi\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Stevensgsp\QuotesApi\Services\QuoteService;
 
 class QuoteController
@@ -13,9 +14,14 @@ class QuoteController
         $this->quoteService = $quoteService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json($this->quoteService->getAllQuotes());
+        $page = $request->query('page', 1);
+
+        $limit = 10;
+        $skip = ($page - 1) * $limit;
+
+        return response()->json($this->quoteService->getAllQuotes($limit, $skip));
     }
 
     public function random()
@@ -26,11 +32,6 @@ class QuoteController
     public function show($id)
     {
         return response()->json($this->quoteService->getQuote($id));
-    }
-
-    public function nextPage()
-    {
-        return response()->json($this->quoteService->getNextPageQuotes());
     }
 
     public function totalPages()
