@@ -59,7 +59,13 @@ class QuoteService
     {
         // We check if the quote is in the local cache
         $quotesData = $this->getAllQuotes();
-        $index = $this->binarySearch($quotesData['quotes'], $id);
+        $quotes = $quotesData ?? [];
+
+        if (empty($quotes)) {
+            return [];
+        }
+
+        $index = $this->binarySearch($quotes, $id);
 
         if ($index !== -1) {
             return $quotes[$index];
