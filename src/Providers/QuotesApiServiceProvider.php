@@ -20,7 +20,7 @@ class QuotesApiServiceProvider extends ServiceProvider
 
         // Publish Routes
         $this->publishes([
-            __DIR__ . '/routes/web.php' => base_path('routes/quotes-api.php'),
+            __DIR__ . '/../routes/web.php' => base_path('routes/quotes-api.php'),
         ], 'quotes-api-routes');
 
         // Publish UI Views
