@@ -16,7 +16,7 @@ class QuotesApiServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
         // Load views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'quotes-api');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'quotes');
 
         // Publish Routes
         $this->publishes([

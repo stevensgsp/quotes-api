@@ -42,6 +42,12 @@ php artisan vendor:publish --tag=quotes-api-config
 
 This will create a `config/quotes.php` file where you can configure settings such as the default quote source, etc.
 
+You can publish the routes like this
+
+```bash
+php artisan vendor:publish --tag=quotes-api-routes
+```
+
 ## API Usage
 
 The package provides the following API endpoints:
