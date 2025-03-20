@@ -59,7 +59,7 @@ class QuoteService
     {
         // We check if the quote is in the local cache
         $quotesData = $this->getAllQuotes();
-        $quotes = $quotesData ?? [];
+        $quotes = $quotesData['quotes'] ?? [];
 
         if (empty($quotes)) {
             return [];
