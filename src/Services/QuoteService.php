@@ -74,6 +74,10 @@ class QuoteService
         // If it is not in the cache, we request it from the API
         $quote = $this->makeRequest("{$this->apiBaseUrl}/quotes/{$id}");
 
+        if (! isset($quote['id'])) {
+            return [];
+        }
+
         // We add the new quote to the local cache and sort the cache
         $this->addQuoteToCache($quote);
 
