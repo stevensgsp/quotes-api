@@ -13,13 +13,27 @@
         }
     ],
     "require": {
-        "laravel/framework": "^8.83"
+        "laravel/framework": "^12.3"
     },
     "extra": {
         "laravel": {
             "providers": [
                 "Stevensgsp\\QuotesApi\\QuotesApiServiceProvider"
             ]
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.7",
+        "pestphp/pest-plugin-laravel": "^3.1"
+    },
+    "scripts": {
+        "test": [
+            "pest"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": false
         }
     }
 }
