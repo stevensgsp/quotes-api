@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('quotes', function () {
+Route::get('quotes-ui', function () {
     return view('quotes::quotes-ui');
 });
