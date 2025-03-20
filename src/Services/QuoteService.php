@@ -87,7 +87,11 @@ class QuoteService
 
         while ($low <= $high) {
             $mid = (int) (($low + $high) / 2);
-            if ($quotes[$mid]['id'] == $id) return $mid;
+
+            if ($quotes[$mid]['id'] == $id) {
+                return $mid;
+            }
+
             $quotes[$mid]['id'] < $id ? $low = $mid + 1 : $high = $mid - 1;
         }
 
