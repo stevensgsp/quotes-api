@@ -18,7 +18,7 @@ class QuotesApiServiceProvider extends ServiceProvider
 
         // Publish UI
         $this->publishes([
-            __DIR__.'/../resources/js/dist' => public_path('vendor/quotes-package'),
+            __DIR__.'/../resources/js' => public_path('vendor/quotes-package'),
         ], 'quotes-ui');
 
         // Load routes
