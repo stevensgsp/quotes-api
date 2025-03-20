@@ -33,9 +33,4 @@ class QuoteController
     {
         return response()->json($this->quoteService->getQuote($id));
     }
-
-    public function totalPages()
-    {
-        return response()->json(['total_pages' => $this->quoteService->getTotalPages()]);
-    }
 }

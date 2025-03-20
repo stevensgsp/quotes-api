@@ -6,6 +6,5 @@ use Stevensgsp\QuotesApi\Http\Controllers\QuoteController;
 Route::prefix('api/quotes')->group(function () {
     Route::get('/', [QuoteController::class, 'index']);
     Route::get('/random', [QuoteController::class, 'random']);
-    Route::get('/total-pages', [QuoteController::class, 'totalPages']);
     Route::get('/{id}', [QuoteController::class, 'show']);
 });

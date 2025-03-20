@@ -13,7 +13,6 @@ class QuoteService
     private int $windowTime;
     private string $cacheKey = 'quotes_api_request_count';
     private array $localCache = [];
-    private int $totalPages = 0;
 
     public function __construct()
     {
@@ -39,9 +38,6 @@ class QuoteService
 
         // Retrieve quotes and store them in the cache
         $response = $this->makeRequest($url);
-
-        // Save the total number of pages
-        $this->totalPages = (int) ceil($response['total'] / $limit);
 
         // Ensure quotes are sorted by ID for binary search
         usort($response['quotes'], fn($a, $b) => $a['id'] <=> $b['id']);
@@ -139,10 +135,5 @@ class QuoteService
 
         // We sort the local cache by ID to ensure that binary search works.
         usort($this->localCache, fn($a, $b) => $a['id'] <=> $b['id']);
-    }
-
-    public function getTotalPages(): int
-    {
-        return $this->totalPages;
     }
 }
