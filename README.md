@@ -22,17 +22,10 @@ Since this package is not available in Packagist, you can install it directly fr
 ],
 ```
 
-3. Add the package in the require section of your composer.json:
+3. Run the following command to install the package:
 
-```json
-"require": {
-    "stevensgsp/quotes-api": "dev-master"
-}
-```
-
-4. Run the following command to install the package:
 ```bash
-composer update stevensgsp/quotes-api --with-dependencies
+composer require stevensgsp/quotes-api:dev-master --with-dependencies
 ```
 
 This will add the package to your Laravel project.
