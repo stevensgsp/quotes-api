@@ -3,7 +3,6 @@
 namespace Stevensgsp\QuotesApi\Http\Controllers;
 
 use Stevensgsp\QuotesApi\Services\QuoteService;
-use Illuminate\Http\Request;
 
 class QuoteController
 {
