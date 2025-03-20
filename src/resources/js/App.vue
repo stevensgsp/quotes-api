@@ -43,6 +43,7 @@ export default {
         async fetchNextPageQuotes() {
             let response = await axios.get('/api/quotes');
             this.quotes = [...this.quotes, ...response.data.quotes];
+            this.totalPages = response.data.total;
             this.currentPage++;
         },
         async fetchQuoteById() {
@@ -50,14 +51,9 @@ export default {
             let response = await axios.get(`/api/quotes/${this.quoteId}`);
             this.quoteById = response.data;
         },
-        async fetchTotalPages() {
-            let response = await axios.get('/api/quotes/total-pages');
-            this.totalPages = response.data.total_pages;
-        },
     },
     mounted() {
         this.fetchNextPageQuotes();
-        this.fetchTotalPages();
     },
 };
 </script>
