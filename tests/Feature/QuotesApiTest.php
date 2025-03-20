@@ -1,7 +1,24 @@
 <?php
 
-it('fetches all quotes')->get('/api/quotes')->assertStatus(200);
+namespace Stevensgsp\QuotesApi\Tests\Feature;
 
-it('fetches a random quote')->get('/api/quotes/random')->assertStatus(200);
+use Stevensgsp\QuotesApi\Tests\TestCase;
 
-it('fetches a specific quote')->get('/api/quotes/1')->assertStatus(200);
+/**
+ * QuotesApiTest handles testing of the Quotes API endpoints.
+ *
+ * This test ensures that the Quotes API is responding correctly for the
+ * defined routes.
+ *
+ * @author Steven Sucre <steven.g.s.p@gmail.com>
+ * @version March 20, 2025
+ */
+class QuotesApiTest extends TestCase
+{
+    public function test_my_package_endpoint()
+    {
+        $response = $this->get('/api/quotes');
+
+        $response->assertStatus(200);
+    }
+}

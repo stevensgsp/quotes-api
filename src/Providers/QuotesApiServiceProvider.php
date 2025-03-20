@@ -4,10 +4,20 @@ namespace Stevensgsp\QuotesApi\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * This service provider is responsible for registering and bootstrapping the
+ * package's services, including routes, views, assets, and configuration.
+ * It allows the package to integrate seamlessly with a Laravel application.
+ *
+ * @author Steven Sucre <steven.g.s.p@gmail.com>
+ * @version March 20, 2025
+ */
 class QuotesApiServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
+     *
+     * @return void
      */
     public function boot()
     {
@@ -41,6 +51,8 @@ class QuotesApiServiceProvider extends ServiceProvider
 
     /**
      * Register services.
+     *
+     * @return void
      */
     public function register()
     {

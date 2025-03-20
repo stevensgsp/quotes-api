@@ -6,6 +6,11 @@
             "Stevensgsp\\QuotesApi\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Stevensgsp\\QuotesApi\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Steven Sucre",
@@ -23,17 +28,6 @@
         }
     },
     "require-dev": {
-        "pestphp/pest": "^3.7",
-        "pestphp/pest-plugin-laravel": "^3.1"
-    },
-    "scripts": {
-        "test": [
-            "pest"
-        ]
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": false
-        }
+        "orchestra/testbench": "^10.1"
     }
 }

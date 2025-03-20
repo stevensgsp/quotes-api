@@ -6,6 +6,14 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * This service provides methods to fetch all quotes, a random quote, and
+ * a specific quote by its ID. It also manages rate limiting, caching,
+ * and binary search to efficiently handle large sets of quotes.
+ *
+ * @author Steven Sucre <steven.g.s.p@gmail.com>
+ * @version March 20, 2025
+ */
 class QuoteService
 {
     private string $apiBaseUrl;
@@ -21,6 +29,13 @@ class QuoteService
         $this->windowTime = config('quotes.window_time', 60);
     }
 
+    /**
+     * Fetch all quotes with optional pagination parameters.
+     *
+     * @param int $limit Number of quotes to retrieve.
+     * @param int $skip Number of quotes to skip (for pagination).
+     * @return array Cached or freshly fetched quotes.
+     */
     public function getAllQuotes(int $limit = 0, int $skip = 0)
     {
         // First, try to recover from the local cache
@@ -31,6 +46,13 @@ class QuoteService
         return $this->localCache;
     }
 
+    /**
+     * Fetch and cache quotes from the API.
+     *
+     * @param int $limit Number of quotes to retrieve.
+     * @param int $skip Number of quotes to skip (for pagination).
+     * @return array The quotes data after fetching from the API and caching it.
+     */
     private function fetchAndCacheQuotes(int $limit, int $skip)
     {
         // Get API quotes with limit and skip
@@ -50,11 +72,22 @@ class QuoteService
         return $this->localCache;
     }
 
+    /**
+     * Fetch a random quote from the API.
+     *
+     * @return array The random quote data.
+     */
     public function getRandomQuote()
     {
         return $this->makeRequest("{$this->apiBaseUrl}/quotes/random");
     }
 
+    /**
+     * Fetch a specific quote by its ID.
+     *
+     * @param int $id The ID of the quote to retrieve.
+     * @return array The quote data, either from the cache or fresh from the API.
+     */
     public function getQuote(int $id)
     {
         // We check if the quote is in the local cache
@@ -84,12 +117,24 @@ class QuoteService
         return $quote;
     }
 
+    /**
+     * Make an HTTP request to the given URL.
+     *
+     * @param string $url The URL to send the request to.
+     * @return array The response data from the API.
+     */
     private function makeRequest(string $url)
     {
         $this->enforceRateLimit();
         return Http::get($url)->json();
     }
 
+    /**
+     * Enforce rate limiting by checking the current request count and delaying
+     * further requests if the rate limit is reached.
+     *
+     * @return void
+     */
     private function enforceRateLimit()
     {
         while (true) {
@@ -116,6 +161,13 @@ class QuoteService
         }
     }
 
+    /**
+     * Perform a binary search on the quotes array to find the quote by ID.
+     *
+     * @param array $quotes The array of quotes to search through.
+     * @param int $id The ID of the quote to find.
+     * @return int The index of the quote in the array, or -1 if not found.
+     */
     private function binarySearch(array $quotes, int $id)
     {
         $low = 0;
@@ -134,6 +186,12 @@ class QuoteService
         return -1;
     }
 
+    /**
+     * Add a quote to the local cache and sort the cache by ID.
+     *
+     * @param array $quote The quote to add to the cache.
+     * @return void
+     */
     private function addQuoteToCache(array $quote)
     {
         // If the quote is already in the local cache, we don't add it.
