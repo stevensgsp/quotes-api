@@ -75,7 +75,8 @@ class QuoteService
         usort($response['quotes'], fn($a, $b) => $a['id'] <=> $b['id']);
 
         // Caching quotes
-        $this->localCache = Cache::remember("quotes_{$limit}_{$skip}", $this->cacheTime, function () use ($response) {
+        $this->localCache = $response;
+        Cache::remember("quotes_{$limit}_{$skip}", $this->cacheTime, function () use ($response) {
             return $response;
         });
 
