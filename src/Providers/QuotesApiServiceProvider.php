@@ -33,7 +33,7 @@ class QuotesApiServiceProvider extends ServiceProvider
             __DIR__ . '/../routes/web.php' => base_path('routes/quotes-api.php'),
         ], 'quotes-api-routes');
 
-        // Publish UI Views
+        // Publish UI Assets
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/quotes-api'),
         ], 'quotes-api-views');
@@ -41,6 +41,11 @@ class QuotesApiServiceProvider extends ServiceProvider
         //Publish UI assets
         $this->publishes([
             __DIR__ . '/../../dist' => public_path('vendor/quotes-api'),
+        ], 'quotes-api-ui');
+
+        // Publish Vue.js components
+        $this->publishes([
+            __DIR__ . '/../resources/js' => resource_path('js/vendor/quotes-api'),
         ], 'quotes-api-ui');
 
         // Publish config
