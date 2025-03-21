@@ -106,7 +106,7 @@ Example Response
             "author": "John Lennon"
         },
 
-        // ...
+        ...
 
         "total":1454,
         "skip":0,
@@ -194,7 +194,7 @@ f you encounter any issues with the API or Vue.js UI, here are some steps you ca
 
 1.  **Check Laravel Logs**: Look at the Laravel log files (`storage/logs/laravel.log`) for any errors related to the package.
 2.  **Clear Cache**: If you're experiencing issues with outdated quotes or cache, you can clear the cache using:
-    
+
     ```bash
     php artisan cache:clear
     ```
