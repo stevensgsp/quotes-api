@@ -105,9 +105,9 @@ Example Response
             "quote": "Life is what happens when you're busy making other plans.",
             "author": "John Lennon"
         },
-
-        ...
-
+        {},
+        {},
+        {},
         "total":1454,
         "skip":0,
         "limit":30
