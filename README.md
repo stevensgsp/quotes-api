@@ -1,6 +1,3 @@
-
-
-
 # Quotes API Package
 
 A Laravel package that provides an API to manage and fetch quotes.
