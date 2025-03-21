@@ -41,11 +41,19 @@ class QuoteService
     public function getAllQuotes(int $limit = 0, int $skip = 0)
     {
         // First, try to recover from the local cache
-        if (empty($this->localCache)) {
-            return $this->fetchAndCacheQuotes($limit, $skip);
+        if (! empty($this->localCache)) {
+            return $this->localCache;
         }
 
-        return $this->localCache;
+        // Then, check in the global cache
+        if (Cache::has($cacheKey = "quotes_{$limit}_{$skip}")) {
+            $this->localCache = Cache::get($cacheKey);
+
+            return $this->localCache;
+        }
+
+        // Finally, fetch from API and store in cache
+        return $this->fetchAndCacheQuotes($limit, $skip);
     }
 
     /**
@@ -67,7 +75,7 @@ class QuoteService
         usort($response['quotes'], fn($a, $b) => $a['id'] <=> $b['id']);
 
         // Caching quotes
-        $this->localCache = Cache::remember("quotes_{$limit}_{$skip}", $this->windowTime, function () use ($response) {
+        $this->localCache = Cache::remember("quotes_{$limit}_{$skip}", $this->cacheTime, function () use ($response) {
             return $response;
         });
 
