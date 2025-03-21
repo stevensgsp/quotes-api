@@ -15,10 +15,21 @@ use Stevensgsp\QuotesApi\Tests\TestCase;
  */
 class QuotesApiTest extends TestCase
 {
-    public function test_my_package_endpoint()
+    public function test_fetch_all_quotes()
     {
         $response = $this->get('/api/quotes');
+        $response->assertStatus(200);
+    }
 
+    public function test_fetch_random_quote()
+    {
+        $response = $this->get('/api/quotes/random');
+        $response->assertStatus(200);
+    }
+
+    public function test_fetch_specific_quote()
+    {
+        $response = $this->get('/api/quotes/1');
         $response->assertStatus(200);
     }
 }
