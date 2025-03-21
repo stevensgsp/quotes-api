@@ -43,11 +43,6 @@ class QuotesApiServiceProvider extends ServiceProvider
             __DIR__ . '/../../dist' => public_path('vendor/quotes-api'),
         ], 'quotes-api-ui');
 
-        // Publish Vue.js components
-        $this->publishes([
-            __DIR__ . '/../resources/js' => resource_path('js/vendor/quotes-api'),
-        ], 'quotes-api-ui');
-
         // Publish config
         $this->publishes([
             __DIR__ . '/../config/quotes.php' => config_path('quotes.php'),

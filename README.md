@@ -1,5 +1,6 @@
 
 
+
 # Quotes API Package
 
 A Laravel package that provides an API to manage and fetch quotes.
@@ -42,6 +43,33 @@ php artisan vendor:publish --tag=quotes-api-config
 ```
 
 This will create a `config/quotes.php` file where you can configure settings such as the default quote source, rate limiting, caching, and other API settings.
+
+### Cache Configuration
+
+To ensure the proper functioning of the quotes API, it's important that your Laravel application has caching configured. This is necessary for the package to store quotes and improve performance by reducing unnecessary API calls.
+
+The package supports two types of cache drivers:
+
+-   **Database Cache**: Suitable for environments where persistent storage for cache is required.
+-   **File Cache**: Stores cache in the filesystem, which is suitable for most applications.
+
+You can configure the cache driver in your Laravel application by modifying the `.env` file.
+
+#### Setting Cache Driver
+
+1.  Open your `.env` file located at the root of your Laravel application.
+2.  Set the `CACHE_STORE` to either `database` or `file`, depending on your preference.
+
+For **Database Cache**, ensure that you have run the cache table migration:
+
+```php
+php artisan cache:table
+php artisan migrate
+```
+
+For **File Cache**, you don't need additional setup beyond ensuring the `CACHE_STORE=file` in your `.env`.
+
+Once the cache is configured, the package will use it to store quotes for faster retrieval.
 
 ### Publishing the Routes
 
@@ -127,7 +155,7 @@ To access the Vue.js UI, you need to publish the frontend assets using the follo
 php artisan vendor:publish --tag=quotes-api-ui
 ```
 
-This will publish the UI assets in the `public/vendor/quotes-api/assets` directory and the Vue.js components in `resources/js/components`.
+This will publish the UI assets in the `public/vendor/quotes-api/assets` directory.
 
 ### Publishing the Views
 
@@ -139,24 +167,9 @@ php artisan vendor:publish --tag=quotes-api-views
 
 The views will be published to `resources/views/vendor/quotes-api`, where you can modify them as needed.
 
-### Build Vue.js Assets
-
-Once you've published the UI, you need to build the Vue.js assets. Run:
-
-```bash
-npm install
-npm run dev
-```
-
-This will compile the Vue.js frontend for local development. For production, run:
-
-```bash
-npm run build
-```
-
 ### Access the UI
 
-After publishing and building the assets, you can access the Vue.js UI by navigating to the `/quotes-ui` route in your browser:
+After publishing the assets, you can access the Vue.js UI by navigating to the `/quotes-ui` route in your browser:
 
 ```
 http://your-laravel-app.com/quotes-ui
@@ -164,12 +177,10 @@ http://your-laravel-app.com/quotes-ui
 
 ### Customizing the UI
 
-If you want to customize the frontend, you can modify the published Vue.js files:
+If you want to customize the frontend, you can modify the published files:
 
--   **Vue Components**: Located in `resources/js/components`.
+-   **Blade Views**: Located in `resources/views/vendor`.
 -   **UI Assets**: Located in `public/vendor/quotes-api/assets`.
-
-Make sure to run `npm run build` again after making any changes to the frontend.
 
 ## Running Tests
 
