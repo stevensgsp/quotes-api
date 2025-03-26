@@ -1,5 +1,5 @@
 <template>
-    <h2>All Quotes</h2>
+    <h2 class="text-red-500">All Quotes</h2>
 
     <div v-for="quote in quotes" :key="quote.id">
         <p>{{ quote.quote }} - {{ quote.author }}</p>
