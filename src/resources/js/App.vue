@@ -12,15 +12,15 @@
             </button>
 
             <template v-for="page in visiblePages" :key="page">
-                <button 
-                    v-if="page === '...'" 
-                    disabled 
+                <button
+                    v-if="page === '...'"
+                    disabled
                     class="dots">
                     ...
                 </button>
-                <button 
-                    v-else 
-                    @click="fetchQuotes(page)" 
+                <button
+                    v-else
+                    @click="fetchQuotes(page)"
                     :class="{ active: currentPage === page }">
                     {{ page }}
                 </button>
