@@ -2,7 +2,9 @@
     <div class="min-h-screen bg-gray-100">
         <aside class="bg-blue-600 text-white p-4 space-y-4 w-full">
             <div class="flex justify-between items-center max-w-4xl mx-auto">
-                <h1 class="text-2xl font-bold">Quotes App</h1>
+                <h1 class="text-2xl font-bold">
+                    <router-link to="/">Quotes App</router-link>
+                </h1>
                 <nav class="flex gap-3 justify-center items-center">
                     <router-link
                         to="/"
