@@ -1,36 +1,38 @@
 <template>
-    <h2 class="text-red-500">All Quotes</h2>
+    <div>
+        <h2>All Quotes</h2>
 
-    <div v-for="quote in quotes" :key="quote.id">
-        <p>{{ quote.quote }} - {{ quote.author }}</p>
-    </div>
+        <div v-for="quote in quotes" :key="quote.id">
+            <p>{{ quote.quote }} - {{ quote.author }}</p>
+        </div>
 
-    <div v-if="totalPages > 1" class="pagination">
-        <button @click="fetchQuotes(currentPage - 1)" :disabled="currentPage === 1">
-            Prev
-        </button>
-
-        <template v-for="page in visiblePages" :key="page">
-            <button
-                v-if="page === '...'"
-                disabled
-                class="dots">
-                ...
+        <div v-if="totalPages > 1" class="pagination">
+            <button @click="fetchQuotes(currentPage - 1)" :disabled="currentPage === 1">
+                Prev
             </button>
-            <button
-                v-else
-                @click="fetchQuotes(page)"
-                :class="{ active: currentPage === page }">
-                {{ page }}
+
+            <template v-for="page in visiblePages" :key="page">
+                <button
+                    v-if="page === '...'"
+                    disabled
+                    class="dots">
+                    ...
+                </button>
+                <button
+                    v-else
+                    @click="fetchQuotes(page)"
+                    :class="{ active: currentPage === page }">
+                    {{ page }}
+                </button>
+            </template>
+
+            <button @click="fetchQuotes(currentPage + 1)" :disabled="currentPage === totalPages">
+                Next
             </button>
-        </template>
+        </div>
 
-        <button @click="fetchQuotes(currentPage + 1)" :disabled="currentPage === totalPages">
-            Next
-        </button>
+        <p>Page {{ currentPage }} of {{ totalPages }}</p>
     </div>
-
-    <p>Page {{ currentPage }} of {{ totalPages }}</p>
 </template>
 
 <script>

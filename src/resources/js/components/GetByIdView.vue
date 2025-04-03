@@ -1,9 +1,7 @@
 <template>
     <div>
-        <router-view></router-view>
-        <router-link to="/">Home</router-link>
-
         <h2>Get Quote by ID</h2>
+
         <input v-model="quoteId" placeholder="Enter Quote ID" />
         <button @click="fetchQuoteById">Get Quote</button>
         <p v-if="quoteById">{{ quoteById.quote }} - {{ quoteById.author }}</p>
