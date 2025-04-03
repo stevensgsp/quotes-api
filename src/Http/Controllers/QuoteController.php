@@ -68,6 +68,12 @@ class QuoteController
      */
     public function show(int $id)
     {
-        return response()->json($this->quoteService->getQuote($id));
+        $quote = $this->quoteService->getQuote($id);
+
+        if (empty($quote)) {
+            abort(404);
+        }
+
+        return response()->json($quote);
     }
 }

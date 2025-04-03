@@ -6,7 +6,7 @@ import RandomView from './components/RandomView.vue'
 
 const routes = [
   { path: '/', component: HomeView },
-  { path: '/get-by-id', component: GetByIdView },
+  { path: '/get-by-id/:id?', component: GetByIdView },
   { path: '/random', component: RandomView },
 ]
 

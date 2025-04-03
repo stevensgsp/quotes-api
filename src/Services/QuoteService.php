@@ -138,6 +138,8 @@ class QuoteService
     {
         $this->enforceRateLimit();
 
+        Log::info("Requesting: $url");
+
         return Http::get($url)->json();
     }
 

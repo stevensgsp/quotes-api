@@ -1,15 +1,13 @@
 <template>
-    <div class="max-w-4xl mx-auto p-6">
-        <h2 class="text-3xl font-bold text-gray-800 mb-6">All Quotes</h2>
+    <div class="max-w-4xl mx-auto py-6">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">All Quotes</h2>
 
-        <div class="space-y-4">
+        <div v-if="quotes.length > 0" class="space-y-4">
             <div
                 v-for="quote in quotes"
                 :key="quote.id"
-                class="p-6 bg-white shadow-lg rounded-lg border border-gray-200"
             >
-                <p class="text-lg font-medium text-gray-700">"{{ quote.quote }}"</p>
-                <p class="text-right text-gray-500 mt-2">- {{ quote.author }}</p>
+                <quote-card :quote="quote" :show-see-more="true" />
             </div>
         </div>
 
@@ -49,8 +47,12 @@
 
 <script>
 import axios from 'axios';
+import QuoteCard from './QuoteCard.vue';
 
 export default {
+    components: {
+        QuoteCard,
+    },
     data() {
         return {
             quotes: [],
