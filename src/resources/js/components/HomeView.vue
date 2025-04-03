@@ -30,7 +30,7 @@
                 <button
                     v-else
                     @click="fetchQuotes(page)"
-                    :class="['px-4 py-2 mx-1 rounded-lg', currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700']">
+                    :class="['px-4 py-2 mx-1 rounded-lg', currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700']">
                     {{ page }}
                 </button>
             </template>
