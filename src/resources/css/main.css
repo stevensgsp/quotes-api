@@ -27,18 +27,3 @@ button:disabled {
     cursor: not-allowed;
     border: 1px solid #ccc;
 }
-
-button.active {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    border: 1px solid #0056b3;
-}
-
-button.dots {
-    background: none;
-    border: none;
-    font-weight: bold;
-    color: #555;
-    cursor: default;
-}

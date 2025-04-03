@@ -1,37 +1,49 @@
 <template>
-    <div>
-        <h2>All Quotes</h2>
+    <div class="max-w-4xl mx-auto p-6">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">All Quotes</h2>
 
-        <div v-for="quote in quotes" :key="quote.id">
-            <p>{{ quote.quote }} - {{ quote.author }}</p>
+        <div class="space-y-4">
+            <div
+                v-for="quote in quotes"
+                :key="quote.id"
+                class="p-6 bg-white shadow-lg rounded-lg border border-gray-200"
+            >
+                <p class="text-lg font-medium text-gray-700">"{{ quote.quote }}"</p>
+                <p class="text-right text-gray-500 mt-2">- {{ quote.author }}</p>
+            </div>
         </div>
 
-        <div v-if="totalPages > 1" class="pagination">
-            <button @click="fetchQuotes(currentPage - 1)" :disabled="currentPage === 1">
-                Prev
-            </button>
+        <div v-if="totalPages > 1" class="flex justify-center mt-6">
+            <button
+                @click="fetchQuotes(currentPage - 1)"
+                :disabled="currentPage === 1"
+                class="px-4 py-2 mx-1 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >Prev</button>
 
             <template v-for="page in visiblePages" :key="page">
                 <button
                     v-if="page === '...'"
                     disabled
-                    class="dots">
+                    class="px-4 py-2 mx-1 text-gray-500 cursor-default">
                     ...
                 </button>
                 <button
                     v-else
                     @click="fetchQuotes(page)"
-                    :class="{ active: currentPage === page }">
+                    :class="['px-4 py-2 mx-1 rounded-lg', currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700']">
                     {{ page }}
                 </button>
             </template>
 
-            <button @click="fetchQuotes(currentPage + 1)" :disabled="currentPage === totalPages">
+            <button
+                @click="fetchQuotes(currentPage + 1)"
+                :disabled="currentPage === totalPages"
+                class="px-4 py-2 mx-1 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
                 Next
             </button>
         </div>
 
-        <p>Page {{ currentPage }} of {{ totalPages }}</p>
+        <p class="text-center text-gray-600 mt-4">Page {{ currentPage }} of {{ totalPages }}</p>
     </div>
 </template>
 
