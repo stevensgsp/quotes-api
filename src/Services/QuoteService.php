@@ -5,6 +5,7 @@ namespace Stevensgsp\QuotesApi\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 
 /**
  * This service provides methods to fetch all quotes, a random quote, and
@@ -20,7 +21,6 @@ class QuoteService
     private int $rateLimit;
     private int $windowTime;
     private int $cacheTime;
-    private string $cacheKey = 'quotes_api_request_count';
     private array $localCache = [];
 
     public function __construct()
@@ -134,45 +134,21 @@ class QuoteService
      * @param string $url The URL to send the request to.
      * @return array The response data from the API.
      */
-    private function makeRequest(string $url)
+    private function makeRequest(string $url): array
     {
-        $this->enforceRateLimit();
+        Log::debug("Requesting: $url");
 
-        Log::info("Requesting: $url");
+        $rateLimitKey = 'quotes_api:' . request()->ip();
 
-        return Http::get($url)->json();
-    }
+        while (RateLimiter::tooManyAttempts($rateLimitKey, $this->rateLimit)) {
+            Log::debug('Rate limit reached. Waiting before retrying...');
 
-    /**
-     * Enforce rate limiting by checking the current request count and delaying
-     * further requests if the rate limit is reached.
-     *
-     * @return void
-     */
-    private function enforceRateLimit()
-    {
-        while (true) {
-            $data = Cache::get($this->cacheKey);
-
-            if (empty($data)) {
-                $data = ['count' => 0, 'reset_at' => now()->timestamp + $this->windowTime];
-                Cache::put($this->cacheKey, $data, $this->windowTime);
-            }
-
-            if ($data['reset_at'] <= now()->timestamp) {
-                Cache::put($this->cacheKey, ['count' => 1, 'reset_at' => now()->timestamp + $this->windowTime], $this->windowTime);
-                return;
-            }
-
-            if ($data['count'] < $this->rateLimit) {
-                $data['count']++;
-                Cache::put($this->cacheKey, $data, $this->windowTime);
-                return;
-            }
-
-            Log::warning("Rate limit reached. Waiting before retrying...");
             sleep(2);
         }
+
+        RateLimiter::hit($rateLimitKey, $this->windowTime);
+
+        return Http::get($url)->json();
     }
 
     /**
